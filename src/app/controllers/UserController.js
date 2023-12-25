@@ -29,21 +29,28 @@ const registerUser = asyncHandler(async (req, res) => {
 
         if (user) {
             res.status(201).json({
-                _id: user._id,
-                username: user.username,
-                fullName: user.fullName,
-                phoneNumber: user.phoneNumber,
-                address: user.address,
-                role: user.role,
-                likedProduct: user.likedProduct,
-                token: generateToken(user._id),
+                status: 201,
+                message: "Success",
+                data: {
+                    _id: user._id,
+                    username: user.username,
+                    fullName: user.fullName,
+                    phoneNumber: user.phoneNumber,
+                    address: user.address,
+                    role: user.role,
+                    token: generateToken(user._id), _id: user._id,
+                }
             });
         } else {
             res.status(400);
             throw new Error('Invalid user data');
         }
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({ 
+            status: 400,
+            message: error.message
+        });
+        
     }
   });
   
@@ -51,25 +58,34 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
     try {
-      const user = await User.findOne({ username });
-      if (user && user.password === password) {
-        res.status(200).json({
-            _id: user._id,
-            fullName: user.fullName,
-            username: user.username,
-            phoneNumber: user.phoneNumber,
-            address: user.address,
-            role: user.role,
-            likedProduct: user.likedProduct,
-            token: generateToken(user._id),
-        });
-      } else {
-        res.status(401).json({ message: 'Invalid username or password' });
-      }
+        const user = await User.findOne({ username });
+        if (user && user.password === password) {
+            res.status(200).json({
+                status: 200,
+                message: "Success",
+                data: {
+                    _id: user._id,
+                    fullName: user.fullName,
+                    username: user.username,
+                    phoneNumber: user.phoneNumber,
+                    address: user.address,
+                    role: user.role,
+                    token: generateToken(user._id),
+                }
+            });
+        } else {
+            res.status(401).json({ 
+                status: 401,
+                message: 'Invalid username or password' 
+            });
+        }
     } catch (error) {
-      res.status(400).json({ message: 'Error: ' + error.message });
+        res.status(400).json({ 
+            status: 400,
+            message: 'Invalid username or password' 
+        });
     }
-  });
+});
 
 
 
