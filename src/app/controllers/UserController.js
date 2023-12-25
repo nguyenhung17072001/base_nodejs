@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler';
 import User from '../models/User.js';
 import mongoose from 'mongoose';
 import { generateToken } from '../../middleware/auth.js'
-
+import bcrypt from 'bcrypt';
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -13,16 +13,18 @@ const registerUser = asyncHandler(async (req, res) => {
         if (userExits) {
             res.status(400);
             throw new Error(
-               'fullName already exists, please register with another fullName address'
+               'username already exists, please register with another username'
             );
         }
+
+        const hashedPassword = await bcrypt.hash(password, 10)
         const user = await User.create({
             _id: new mongoose.Types.ObjectId(),
             username,
             fullName,
             phoneNumber,
             address,
-            password,
+            password: hashedPassword,
 
         });
   
@@ -52,14 +54,14 @@ const registerUser = asyncHandler(async (req, res) => {
         });
         
     }
-  });
+});
   
   // login useer
 const loginUser = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
     try {
         const user = await User.findOne({ username });
-        if (user && user.password === password) {
+        if (user && (await bcrypt.compare(password, user.password))) {
             res.status(200).json({
                 status: 200,
                 message: "Success",
