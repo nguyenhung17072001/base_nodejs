@@ -51,13 +51,7 @@ const UserSchema = mongoose.Schema({
 
 
 
-UserSchema.methods.encryptPassword= (password)=> {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null)
-}
 
-UserSchema.methods.validPassword = (password)=> {
-    return bcrypt.compareSync(password, this.password)
-}
 
 
 export default mongoose.model('User', UserSchema);
