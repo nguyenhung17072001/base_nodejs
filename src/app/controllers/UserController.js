@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/User.js';
 import mongoose from 'mongoose';
-import { generateToken } from '../Middleware/Auth.js';
+import { generateToken } from '../../middleware/auth.js'
 
 
 
@@ -70,3 +70,11 @@ const loginUser = asyncHandler(async (req, res) => {
       res.status(400).json({ message: 'Error: ' + error.message });
     }
   });
+
+
+
+export {
+    registerUser,
+    loginUser,
+
+}

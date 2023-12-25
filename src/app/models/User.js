@@ -51,11 +51,11 @@ const UserSchema = mongoose.Schema({
 
 
 
-User.methods.encryptPassword= (password)=> {
+UserSchema.methods.encryptPassword= (password)=> {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null)
 }
 
-User.methods.validPassword = (password)=> {
+UserSchema.methods.validPassword = (password)=> {
     return bcrypt.compareSync(password, this.password)
 }
 

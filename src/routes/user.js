@@ -1,4 +1,8 @@
 import express from 'express';
+import {
+    loginUser,
+    registerUser
+} from '../app/controllers/UserController.js'
 const router = express.Router();
 
 //const userController = require('../app/controllers/UserController')
@@ -6,9 +10,8 @@ const router = express.Router();
 //newsController.index
 
 
-router.get('/login', ()=> {
-    console.log('em Hung jr')
-})
+router.post('/login', loginUser)
+router.post('/register', registerUser)
 
 
 export default router;
